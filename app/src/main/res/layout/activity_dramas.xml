@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".ui.activity.DramasActivity"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/a_dramas_rv_dramas"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+    tools:listitem="@layout/item_drama"
+    tools:spanCount="2"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/a_dramas_fab_search"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:layout_marginEnd="16dp"
+    android:backgroundTint="@color/colorPrimary"
+    android:src="@drawable/ic_search"
+    app:borderWidth="0dp"
+    app:fabSize="normal"
+    app:layout_anchor="@id/a_dramas_rv_dramas"
+    app:layout_anchorGravity="bottom|end"
+    />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
