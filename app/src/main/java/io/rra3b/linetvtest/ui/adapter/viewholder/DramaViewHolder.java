@@ -11,11 +11,15 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import io.rra3b.linetvtest.R;
 import io.rra3b.linetvtest.data.remote.gson.Drama;
 import io.rra3b.linetvtest.util.DateUtils;
+import java.util.Locale;
 
 public class DramaViewHolder extends BaseViewHolder {
 
   @BindView(R.id.i_drama_iv_thumb)
   protected ImageView ivThumb;
+
+  @BindView(R.id.i_drama_tv_rating)
+  protected TextView tvRating;
 
   @BindView(R.id.i_drama_tv_name)
   protected TextView tvName;
@@ -33,6 +37,9 @@ public class DramaViewHolder extends BaseViewHolder {
         .load(drama.getThumbUrl())
         .apply(new RequestOptions().centerCrop())
         .into(ivThumb);
+
+    tvRating.setText(String.format(Locale.TAIWAN, "%.1f", drama.getRating()));
+
     tvName.setText(drama.getName());
     tvDateCreated.setText(DateUtils.toDateString(drama.getDateCreated()));
   }

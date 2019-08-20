@@ -1,15 +1,15 @@
-package io.rra3b.linetvtest.viewmodel;
+package io.rra3b.linetvtest.ui.viewmodel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import io.rra3b.linetvtest.data.repo.DramasRepository;
 
-public class DramaViewModelFactory extends ViewModelProvider.NewInstanceFactory {
+public class DramasViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
   private DramasRepository dramasRepository;
 
-  public DramaViewModelFactory(DramasRepository dramasRepository) {
+  public DramasViewModelFactory(DramasRepository dramasRepository) {
     this.dramasRepository = dramasRepository;
   }
 
@@ -17,6 +17,6 @@ public class DramaViewModelFactory extends ViewModelProvider.NewInstanceFactory 
   @Override
   public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
     //noinspection unchecked
-    return (T) new DramaViewModel(dramasRepository);
+    return (T) new DramasViewModel(dramasRepository);
   }
 }

@@ -5,7 +5,9 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:padding="@dimen/padding_drama_item"
+  android:layout_marginTop="@dimen/margin_small"
+  android:layout_marginBottom="@dimen/margin_small"
+  android:padding="@dimen/drama_item_views_spacing"
   >
 
   <ImageView
@@ -19,24 +21,41 @@
 
   <TextView
     android:id="@+id/i_drama_tv_name"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="4dp"
+    android:layout_marginTop="@dimen/drama_item_views_spacing"
+    android:layout_marginStart="@dimen/drama_item_views_spacing"
+    android:layout_marginEnd="@dimen/drama_item_views_spacing"
+    android:ellipsize="end"
+    android:maxLines="1"
     android:textAppearance="@style/AppText.Title"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="@id/i_drama_iv_thumb"
     app:layout_constraintTop_toBottomOf="@id/i_drama_iv_thumb"
-    tools:text="drama name"
+    tools:text="a long draaamaa naaaaaaaaaaaaaaaaaaaaaaaaaaaaaame"
+    />
+
+  <TextView
+    android:id="@+id/i_drama_tv_rating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/drama_item_views_spacing"
+    android:drawableStart="@drawable/ic_star_half"
+    android:textAppearance="@style/AppText"
+    app:layout_constraintStart_toStartOf="@id/i_drama_tv_name"
+    app:layout_constraintTop_toBottomOf="@id/i_drama_tv_name"
+    tools:text="4.6"
     />
 
   <TextView
     android:id="@+id/i_drama_tv_date_created"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginEnd="@dimen/drama_item_views_spacing"
     android:drawableStart="@drawable/ic_date_created"
     android:textAppearance="@style/AppText"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/i_drama_tv_name"
+    app:layout_constraintTop_toTopOf="@id/i_drama_tv_rating"
     tools:text="2019.01.04"
     />
 

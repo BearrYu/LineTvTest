@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.google.gson.GsonBuilder;
 import io.rra3b.linetvtest.data.remote.MockyService;
 import io.rra3b.linetvtest.data.repo.DramasRepository;
-import io.rra3b.linetvtest.viewmodel.DramaViewModel;
-import io.rra3b.linetvtest.viewmodel.DramaViewModelFactory;
+import io.rra3b.linetvtest.ui.viewmodel.DramasViewModel;
+import io.rra3b.linetvtest.ui.viewmodel.DramasViewModelFactory;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -16,7 +16,7 @@ public class InjectorUtils {
 
   private static volatile MockyService sMockyService;
 
-  public static MockyService provideMockyService() {
+  private static MockyService provideMockyService() {
     if (sMockyService == null) {
       synchronized (InjectorUtils.class) {
         if (sMockyService == null) {
@@ -34,18 +34,18 @@ public class InjectorUtils {
     return sMockyService;
   }
 
-  public static DramaViewModel provideDramaViewModel(Fragment fragment) {
-    return ViewModelProviders.of(fragment, provideDramaViewModelFactory())
-        .get(DramaViewModel.class);
+  public static DramasViewModel provideDramasViewModel(Fragment fragment) {
+    return ViewModelProviders.of(fragment, provideDramasViewModelFactory())
+        .get(DramasViewModel.class);
   }
 
-  public static DramaViewModel provideDramaViewModel(FragmentActivity fragmentActivity) {
-    return ViewModelProviders.of(fragmentActivity, provideDramaViewModelFactory())
-        .get(DramaViewModel.class);
+  public static DramasViewModel provideDramasViewModel(FragmentActivity fragmentActivity) {
+    return ViewModelProviders.of(fragmentActivity, provideDramasViewModelFactory())
+        .get(DramasViewModel.class);
   }
 
-  private static DramaViewModelFactory provideDramaViewModelFactory() {
-    return new DramaViewModelFactory(provideDramasRepository());
+  private static DramasViewModelFactory provideDramasViewModelFactory() {
+    return new DramasViewModelFactory(provideDramasRepository());
   }
 
   private static DramasRepository provideDramasRepository() {
