@@ -1,17 +1,25 @@
 package io.rra3b.linetvtest.ui.viewmodel;
 
+import android.app.Application;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.text.TextUtils;
 import androidx.annotation.IntDef;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.rra3b.linetvtest.data.remote.gson.Drama;
+import io.rra3b.linetvtest.data.local.dto.DramaOverview;
+import io.rra3b.linetvtest.data.local.dto.DramaSearchResult;
 import io.rra3b.linetvtest.data.repo.DramasRepository;
+import io.rra3b.linetvtest.util.reactivex.MaybeTransformers;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
-public class DramasViewModel extends ViewModel {
+public class DramasViewModel extends AndroidViewModel {
 
   public static final int FRAGMENT_ACTION_SEARCH = 1;
   public static final int FRAGMENT_ACTION_BACK_TO_LIST = 2;
@@ -24,21 +32,26 @@ public class DramasViewModel extends ViewModel {
 
   private DramasRepository dramasRepository;
 
-  private MutableLiveData<List<Drama>> liveDramas;
+  private MutableLiveData<List<DramaOverview>> liveDramasOverview;
+  private MutableLiveData<List<DramaSearchResult>> liveDramaSearchResult;
 
   private MutableLiveData<Integer> liveFragmentAction;
 
-  public DramasViewModel(DramasRepository dramasRepository) {
+  private String cachedClipcboardText;
+
+  public DramasViewModel(Application application, DramasRepository dramasRepository) {
+    super(application);
     this.dramasRepository = dramasRepository;
-    this.liveDramas = new MutableLiveData<>();
+    this.liveDramasOverview = new MutableLiveData<>();
+    this.liveDramaSearchResult = new MutableLiveData<>();
     this.liveFragmentAction = new MutableLiveData<>();
   }
 
   public void refreshDramas() {
-    dramasRepository.fetchDramas()
+    dramasRepository.getDramasOverview()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess(liveDramas::setValue)
+        .doOnSuccess(liveDramasOverview::setValue)
         .subscribe();
   }
 
@@ -46,9 +59,44 @@ public class DramasViewModel extends ViewModel {
     liveFragmentAction.setValue(action);
   }
 
+  @SuppressWarnings("ConstantConditions")
+  public void cacheClipboardText() {
+
+    ClipboardManager clipboard = (ClipboardManager) getApplication()
+        .getSystemService(Context.CLIPBOARD_SERVICE);
+
+    boolean hasDataForPasting = clipboard.hasPrimaryClip()
+        && clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN);
+
+    cachedClipcboardText = hasDataForPasting
+        ? clipboard.getPrimaryClip().getItemAt(0).getText().toString()
+        : null;
+  }
+
+  @Nullable
+  public String getClipboardText() {
+    return cachedClipcboardText;
+  }
+
+  public void queryDramas(String queryText) {
+    if (TextUtils.isEmpty(queryText)) {
+      liveDramaSearchResult.setValue(null);
+      return;
+    }
+
+    dramasRepository.getDramasNameContains(queryText)
+        .doOnSuccess(liveDramaSearchResult::postValue)
+        .compose(MaybeTransformers.switchSchedulers())
+        .subscribe();
+  }
+
   //region Getters.
-  public MutableLiveData<List<Drama>> getLiveDramas() {
-    return liveDramas;
+  public MutableLiveData<List<DramaOverview>> getLiveDramasOverview() {
+    return liveDramasOverview;
+  }
+
+  public MutableLiveData<List<DramaSearchResult>> getLiveSearchResult() {
+    return liveDramaSearchResult;
   }
 
   public MutableLiveData<Integer> getLiveFragmentAction() {

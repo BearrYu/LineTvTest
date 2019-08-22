@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ui.fragment.SearchFragment"
   >
 
-  <TextView
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/f_search_rv_search_results"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="Hello"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toTopOf="@id/f_search_sv_search_drama"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:listitem="@layout/item_search_result"
     />
 
-</FrameLayout>
+  <TextView
+    android:id="@+id/f_search_tv_clipboard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_small"
+    android:padding="@dimen/spacing_small"
+    android:background="@drawable/clip_text_background"
+    android:drawableEnd="@drawable/ic_arrow_left_down"
+    android:drawablePadding="@dimen/spacing_small"
+    android:drawableStart="@drawable/clip_text_drawable"
+    android:elevation="6dp"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:maxLines="1"
+    app:layout_constraintBottom_toTopOf="@id/f_search_sv_search_drama"
+    tools:text="Loooooooooooooooooooong Text From Clipboard"
+    />
+
+  <androidx.appcompat.widget.SearchView
+    android:id="@+id/f_search_sv_search_drama"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:background="@color/colorPrimary"
+    android:elevation="6dp"
+    android:iconifiedByDefault="false"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    app:closeIcon="@drawable/ic_close"
+    app:goIcon="@drawable/ic_paste"
+    app:layout_constraintBottom_toBottomOf="parent"
+    />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
   // just in case.
   protected Unbinder unbinder;

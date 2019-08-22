@@ -1,9 +1,11 @@
 package io.rra3b.linetvtest;
 
-import androidx.fragment.app.Fragment;
+import android.app.Application;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProviders;
 import com.google.gson.GsonBuilder;
+import io.rra3b.linetvtest.data.local.LineTvDatabase;
+import io.rra3b.linetvtest.data.local.dao.DramaModel;
 import io.rra3b.linetvtest.data.remote.MockyService;
 import io.rra3b.linetvtest.data.repo.DramasRepository;
 import io.rra3b.linetvtest.ui.viewmodel.DramasViewModel;
@@ -12,9 +14,19 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@SuppressWarnings("WeakerAccess")
 public class InjectorUtils {
 
+  private static final String APPLICATION_CONTEXT_IS_NULL = "Application context is null. Maybe you has not called InjectorUtils.initialize(Context) method.";
+
   private static volatile MockyService sMockyService;
+  private static volatile LineTvDatabase sDatabase;
+
+  private static Application sApp;
+
+  public static void initialize(Application appContext) {
+    InjectorUtils.sApp = appContext;
+  }
 
   private static MockyService provideMockyService() {
     if (sMockyService == null) {
@@ -34,9 +46,22 @@ public class InjectorUtils {
     return sMockyService;
   }
 
-  public static DramasViewModel provideDramasViewModel(Fragment fragment) {
-    return ViewModelProviders.of(fragment, provideDramasViewModelFactory())
-        .get(DramasViewModel.class);
+  private static LineTvDatabase provideLineTvDatabase() {
+    if (sDatabase == null) {
+      synchronized (InjectorUtils.class) {
+        if (sDatabase == null) {
+          if (sApp == null) {
+            throw new RuntimeException(APPLICATION_CONTEXT_IS_NULL);
+          }
+          sDatabase = LineTvDatabase.newInstance(sApp);
+        }
+      }
+    }
+    return sDatabase;
+  }
+
+  public static DramaModel provideDramaModel() {
+    return provideLineTvDatabase().dramaModel();
   }
 
   public static DramasViewModel provideDramasViewModel(FragmentActivity fragmentActivity) {
@@ -45,11 +70,10 @@ public class InjectorUtils {
   }
 
   private static DramasViewModelFactory provideDramasViewModelFactory() {
-    return new DramasViewModelFactory(provideDramasRepository());
+    return new DramasViewModelFactory(sApp, provideDramasRepository());
   }
 
   private static DramasRepository provideDramasRepository() {
-    return new DramasRepository(provideMockyService());
+    return new DramasRepository(provideMockyService(), provideDramaModel());
   }
-
 }

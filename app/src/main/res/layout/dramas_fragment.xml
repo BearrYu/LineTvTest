@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-    tools:listitem="@layout/item_drama"
+    tools:listitem="@layout/item_drama_overview"
     tools:spanCount="2"
     />
 

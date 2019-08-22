@@ -16,7 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.processors.PublishProcessor;
 import io.rra3b.linetvtest.InjectorUtils;
 import io.rra3b.linetvtest.R;
-import io.rra3b.linetvtest.ui.adapter.DramasAdapter;
+import io.rra3b.linetvtest.ui.adapter.DramaOverviewAdapter;
 import io.rra3b.linetvtest.ui.base.BaseFragment;
 import io.rra3b.linetvtest.ui.viewmodel.DramasViewModel;
 import io.rra3b.linetvtest.util.reactivex.SimpleObserverImpl;
@@ -32,7 +32,7 @@ public class DramasFragment extends BaseFragment {
   @BindView(R.id.a_dramas_rv_dramas)
   protected RecyclerView rvDramas;
   private GridLayoutManager lmDramas;
-  private DramasAdapter adapterDramas;
+  private DramaOverviewAdapter adapterDramas;
 
   private DramasViewModel mViewModel;
 
@@ -54,7 +54,7 @@ public class DramasFragment extends BaseFragment {
 
     // setup rvDramas.
     lmDramas = new GridLayoutManager(rvDramas.getContext(), 2);
-    adapterDramas = new DramasAdapter(R.layout.item_drama);
+    adapterDramas = new DramaOverviewAdapter(R.layout.item_drama_overview);
     rvDramas.setLayoutManager(lmDramas);
     rvDramas.setAdapter(adapterDramas);
 
@@ -75,14 +75,14 @@ public class DramasFragment extends BaseFragment {
     scrollStatePublishProcessor = PublishProcessor.create();
 
     // setup drama data flow.
-    mViewModel.getLiveDramas()
+    mViewModel.getLiveDramasOverview()
         .observe(this, adapterDramas::setNewData);
     mViewModel.refreshDramas();
 
-    // hide fabSearch on rvDramas scrolling.
+    // hideLoading fabSearch on rvDramas scrolling.
     scrollStatePublishProcessor
         .toObservable()
-        // hide fab once scrolling.
+        // hideLoading fab once scrolling.
         .doOnNext(scrollState -> {
           if (scrollState != RecyclerView.SCROLL_STATE_IDLE) {
             fabSearch.hide();

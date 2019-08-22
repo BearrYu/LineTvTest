@@ -1,6 +1,9 @@
-package io.rra3b.linetvtest.data.remote.gson;
+package io.rra3b.linetvtest.data.local.entity;
 
-import com.google.gson.annotations.SerializedName;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import io.rra3b.linetvtest.data.remote.response.Drama;
 import java.util.Date;
 
 /**
@@ -17,25 +20,39 @@ import java.util.Date;
  *  }
  * </pre>
  */
-public class Drama {
+@Entity(tableName = "dramas")
+public class DramaEntity {
 
-  @SerializedName("drama_id")
+  @PrimaryKey
+  @ColumnInfo(name = "drama_id")
   private int dramaId;
 
-  @SerializedName("name")
+  @ColumnInfo(name = "name")
   private String name;
 
-  @SerializedName("total_views")
+  @ColumnInfo(name = "total_views")
   private int totalViews;
 
-  @SerializedName("created_at")
+  @ColumnInfo(name = "date_created")
   private Date dateCreated;
 
-  @SerializedName("thumb")
+  @ColumnInfo(name = "thumb")
   private String thumbUrl;
 
-  @SerializedName("rating")
+  @ColumnInfo(name = "rating")
   private float rating;
+
+  public DramaEntity() {
+  }
+
+  public DramaEntity(Drama drama) {
+    this.dramaId = drama.getDramaId();
+    this.name = drama.getName();
+    this.totalViews = drama.getTotalViews();
+    this.dateCreated = drama.getDateCreated();
+    this.thumbUrl = drama.getThumbUrl();
+    this.rating = drama.getRating();
+  }
 
   //region Getters and Setters
   public int getDramaId() {

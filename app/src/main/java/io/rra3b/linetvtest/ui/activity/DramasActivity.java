@@ -12,14 +12,12 @@ import io.rra3b.linetvtest.ui.viewmodel.DramasViewModel.FragmentAction;
 
 public class DramasActivity extends BaseActivity {
 
-  private DramasViewModel mViewModel;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_dramas);
 
-    mViewModel = InjectorUtils.provideDramasViewModel(this);
+    DramasViewModel mViewModel = InjectorUtils.provideDramasViewModel(this);
     mViewModel.getLiveFragmentAction()
         .observe(this, this::handleFragmentAction);
 
@@ -35,21 +33,26 @@ public class DramasActivity extends BaseActivity {
             .popBackStack(SearchFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         break;
       case DramasViewModel.FRAGMENT_ACTION_SEARCH:
-        getSupportFragmentManager().beginTransaction()
-            .replace(R.id.a_dramas_flContainer, SearchFragment.newInstance(), SearchFragment.TAG)
-            .addToBackStack(SearchFragment.TAG)
-            .commit();
+        showSearchFragment();
         break;
       default:
         break;
     }
   }
 
+  private void showSearchFragment() {
+    getSupportFragmentManager().beginTransaction()
+        .replace(R.id.a_dramas_flContainer, SearchFragment.newInstance(), SearchFragment.TAG)
+        .addToBackStack(SearchFragment.TAG)
+        .commit();
+    setTitle("Search Dramas");
+  }
+
   @Override
   public void onBackPressed() {
     if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-      getSupportFragmentManager()
-          .popBackStack(SearchFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+      getSupportFragmentManager().popBackStack();
+      //.popBackStack(SearchFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     } else {
       super.onBackPressed();
     }
