@@ -52,7 +52,7 @@ public class DramasViewModel extends AndroidViewModel {
   }
 
   public void refreshDramas() {
-    dramasRepository.getDramasOverview()
+    dramasRepository.fetchDramas(false)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(liveDramasOverview::setValue)

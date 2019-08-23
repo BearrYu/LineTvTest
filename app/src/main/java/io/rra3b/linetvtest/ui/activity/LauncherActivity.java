@@ -13,5 +13,6 @@ public class LauncherActivity extends AppCompatActivity {
     setContentView(R.layout.activity_launcher);
 
     startActivity(new Intent().setClass(this, DramasActivity.class));
+    finish();
   }
 }
