@@ -17,6 +17,10 @@
     android:theme="@style/AppTheme"
     tools:ignore="GoogleAppIndexingWarning"
     >
+    <activity
+      android:name=".ui.activity.DramaDetailActivity"
+      android:theme="@style/AppTheme.NoActionBar"
+      />
     <activity android:name=".ui.activity.LauncherActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

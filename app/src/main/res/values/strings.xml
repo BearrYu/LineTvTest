@@ -1,4 +1,5 @@
 <resources>
   <string name="app_name">LineTvTest</string>
   <string name="content_desc_i_drama_iv_thumb">drama thumb</string>
+  <string name="drama_date_and_views">%s 出版 | %d 次觀看</string>
 </resources>

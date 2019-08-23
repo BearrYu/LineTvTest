@@ -22,6 +22,10 @@ public class DramasRepository {
     this.dramaModel = dramaModel;
   }
 
+  public Maybe<DramaEntity> getDramaById(int id) {
+    return dramaModel.getById(id);
+  }
+
   public Maybe<List<DramaOverview>> getDramasOverview() {
     return dramaModel.getDramasOverviewSortBy(DramaModel.COLUMN_DATE);
   }

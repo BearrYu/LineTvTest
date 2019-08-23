@@ -16,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.processors.PublishProcessor;
 import io.rra3b.linetvtest.InjectorUtils;
 import io.rra3b.linetvtest.R;
+import io.rra3b.linetvtest.data.local.dto.DramaOverview;
 import io.rra3b.linetvtest.ui.adapter.DramaOverviewAdapter;
 import io.rra3b.linetvtest.ui.base.BaseFragment;
 import io.rra3b.linetvtest.ui.viewmodel.DramasViewModel;
@@ -55,6 +56,12 @@ public class DramasFragment extends BaseFragment {
     // setup rvDramas.
     lmDramas = new GridLayoutManager(rvDramas.getContext(), 2);
     adapterDramas = new DramaOverviewAdapter(R.layout.item_drama_overview);
+    adapterDramas.setOnItemClickListener((adapter, view1, position) -> {
+      DramaOverview drama = adapterDramas.getItem(position);
+      if (drama != null) {
+        mViewModel.showDramaDetail(drama.getDramaId());
+      }
+    });
     rvDramas.setLayoutManager(lmDramas);
     rvDramas.setAdapter(adapterDramas);
 

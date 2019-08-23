@@ -1,5 +1,6 @@
 package io.rra3b.linetvtest.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.FragmentManager;
 import io.rra3b.linetvtest.InjectorUtils;
@@ -20,6 +21,9 @@ public class DramasActivity extends BaseActivity {
     DramasViewModel mViewModel = InjectorUtils.provideDramasViewModel(this);
     mViewModel.getLiveFragmentAction()
         .observe(this, this::handleFragmentAction);
+
+    mViewModel.getLiveDramaToShow()
+        .observe(this, this::showDramaDetail);
 
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.a_dramas_flContainer, DramasFragment.newInstance(), DramasFragment.TAG)
@@ -46,6 +50,12 @@ public class DramasActivity extends BaseActivity {
         .addToBackStack(SearchFragment.TAG)
         .commit();
     setTitle("Search Dramas");
+  }
+
+  private void showDramaDetail(int dramaId) {
+    startActivity(new Intent()
+        .setClass(this, DramaDetailActivity.class)
+        .putExtra(DramaDetailActivity.EXT_DRAMA_ID, dramaId));
   }
 
   @Override

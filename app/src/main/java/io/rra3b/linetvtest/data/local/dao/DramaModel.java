@@ -27,6 +27,17 @@ public abstract class DramaModel implements BaseModel<DramaEntity> {
 
   }
 
+
+  @Query("SELECT "
+      + "    * "
+      + "FROM "
+      + "  dramas "
+      + "WHERE "
+      + "  drama_id = :id"
+  )
+  public abstract Maybe<DramaEntity> getById(int id);
+
+
   @Query("SELECT "
       + "    drama_id, "
       + "    name, "

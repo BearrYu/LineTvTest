@@ -6,5 +6,7 @@
 
   <dimen name="default_page_padding">@dimen/spacing_medium</dimen>
   <dimen name="drama_item_views_spacing">@dimen/spacing_mini</dimen>
+  <dimen name="drama_detail_expanded_title_view_height">60dp</dimen>
+  <dimen name="expanded_toolbar_height">80dp</dimen>
 
 </resources>

@@ -40,7 +40,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/drama_item_views_spacing"
-    android:drawableStart="@drawable/ic_star_half"
+    android:drawableStart="@drawable/ic_star_small"
     android:textAppearance="@style/AppText"
     app:layout_constraintStart_toStartOf="@id/i_drama_tv_name"
     app:layout_constraintTop_toBottomOf="@id/i_drama_tv_name"

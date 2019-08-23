@@ -9,10 +9,12 @@ import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
+import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.rra3b.linetvtest.data.local.dto.DramaOverview;
 import io.rra3b.linetvtest.data.local.dto.DramaSearchResult;
+import io.rra3b.linetvtest.data.local.entity.DramaEntity;
 import io.rra3b.linetvtest.data.repo.DramasRepository;
 import io.rra3b.linetvtest.util.reactivex.MaybeTransformers;
 import java.lang.annotation.Retention;
@@ -35,15 +37,17 @@ public class DramasViewModel extends AndroidViewModel {
   private MutableLiveData<List<DramaOverview>> liveDramasOverview;
   private MutableLiveData<List<DramaSearchResult>> liveDramaSearchResult;
 
+  private MutableLiveData<Integer> liveDramaToShow;
   private MutableLiveData<Integer> liveFragmentAction;
 
-  private String cachedClipcboardText;
+  private String cachedClipboardText;
 
   public DramasViewModel(Application application, DramasRepository dramasRepository) {
     super(application);
     this.dramasRepository = dramasRepository;
     this.liveDramasOverview = new MutableLiveData<>();
     this.liveDramaSearchResult = new MutableLiveData<>();
+    this.liveDramaToShow = new MutableLiveData<>();
     this.liveFragmentAction = new MutableLiveData<>();
   }
 
@@ -68,14 +72,14 @@ public class DramasViewModel extends AndroidViewModel {
     boolean hasDataForPasting = clipboard.hasPrimaryClip()
         && clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN);
 
-    cachedClipcboardText = hasDataForPasting
+    cachedClipboardText = hasDataForPasting
         ? clipboard.getPrimaryClip().getItemAt(0).getText().toString()
         : null;
   }
 
   @Nullable
   public String getClipboardText() {
-    return cachedClipcboardText;
+    return cachedClipboardText;
   }
 
   public void queryDramas(String queryText) {
@@ -90,6 +94,15 @@ public class DramasViewModel extends AndroidViewModel {
         .subscribe();
   }
 
+  public Maybe<DramaEntity> getDrama(int id) {
+    return dramasRepository.getDramaById(id)
+        .compose(MaybeTransformers.switchSchedulers());
+  }
+
+  public void showDramaDetail(int dramaId) {
+    liveDramaToShow.setValue(dramaId);
+  }
+
   //region Getters.
   public MutableLiveData<List<DramaOverview>> getLiveDramasOverview() {
     return liveDramasOverview;
@@ -97,6 +110,10 @@ public class DramasViewModel extends AndroidViewModel {
 
   public MutableLiveData<List<DramaSearchResult>> getLiveSearchResult() {
     return liveDramaSearchResult;
+  }
+
+  public MutableLiveData<Integer> getLiveDramaToShow() {
+    return liveDramaToShow;
   }
 
   public MutableLiveData<Integer> getLiveFragmentAction() {

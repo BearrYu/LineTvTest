@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.rra3b.linetvtest.InjectorUtils;
 import io.rra3b.linetvtest.R;
+import io.rra3b.linetvtest.data.local.dto.DramaSearchResult;
 import io.rra3b.linetvtest.ui.adapter.SearchResultAdapter;
 import io.rra3b.linetvtest.ui.base.BaseFragment;
 import io.rra3b.linetvtest.ui.viewmodel.DramasViewModel;
@@ -58,6 +59,12 @@ public class SearchFragment extends BaseFragment {
     // setup rvSearchResults.
     lmSearchResult = new LinearLayoutManager(getActivity());
     adapterSearchResult = new SearchResultAdapter(R.layout.item_search_result);
+    adapterSearchResult.setOnItemClickListener((adapter, view1, position) -> {
+      DramaSearchResult drama = adapterSearchResult.getItem(position);
+      if (drama != null) {
+        mViewModel.showDramaDetail(drama.getDramaId());
+      }
+    });
     rvSearchResults.setLayoutManager(lmSearchResult);
     rvSearchResults.setAdapter(adapterSearchResult);
 
